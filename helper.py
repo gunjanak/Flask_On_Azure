@@ -92,7 +92,7 @@ def inference(X):
     payload = json.dumps({"data": X.tolist()})
 
     # Get the deployment endpoint
-    scoring_uri = "http://2cc0efbf-f284-4fa0-af45-3eeb52f990df.eastus2.azurecontainer.io/score"
+    scoring_uri = "http://052b8af2-5fc7-4af2-adc6-4e7dff223ca8.eastus2.azurecontainer.io/score"
     headers = {"Content-Type": "application/json"}
 
     # Send request to the deployed model
