@@ -40,11 +40,15 @@ def home():
 
             # Create sequences
             X, y = create_sequences(df)
+            print(X.shape)
+            print(type(X))
 
             # Convert NumPy arrays to lists
             y_list = y.tolist()
             prediction = inference(X)
+            print(X[-5:])
             prediction_list = prediction
+            print(prediction_list[-5:])
 
             # Take only the last 'len(y)' dates from df
             df_dates = df.iloc[-len(y):]['Date'].values
@@ -67,16 +71,25 @@ def home():
             # Generate interactive plot
             plot_html = generate_plotly_plot(result_df, symbol)
 
-            # --- 🔹 Next-Day Forecast ---
-            last_5_days = df.iloc[-5:].drop(columns=['Date'])  # Drop Date column
-            last_5_days_list = last_5_days.values  # Convert to list
-            print(type(last_5_days_list))
-
-            forecasted_price = inference(np.array(last_5_days_list))  # Pass list to inference()
+            # # --- 🔹 Next-Day Forecast ---
+            print(df.tail())
+            df =df[['Close']]
+            last_5_days = df.iloc[-5:]  
+            print(f"Last 5 days: {last_5_days}")
+            last_5_days_array = last_5_days.values  
+            last_5_days_array = last_5_days_array.reshape(1, 5)
+            print(last_5_days_array.shape)
+            print(type(last_5_days_array))
+           
+            
+            forecasted_price = inference(last_5_days_array)  # Pass list to inference()
+            print(forecasted_price)
             forecasted_price = round(float(forecasted_price[0]), 2)  # Convert to readable format
 
     return render_template('index.html', df_html=df_html, plot_html=plot_html, 
                            mape_value=mape_value, forecasted_price=forecasted_price)
 
+    
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
